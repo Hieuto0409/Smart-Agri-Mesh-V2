@@ -1,0 +1,13 @@
+/*
+ * uart_drive.h
+ *
+ *  Created on: Jun 29, 2026
+ *      Author: MSI PC
+ */
+
+#ifndef INC_APP_UART_UART_DRIVE_H_
+#define INC_APP_UART_UART_DRIVE_H_
+
+
+
+#endif /* INC_APP_UART_UART_DRIVE_H_ */

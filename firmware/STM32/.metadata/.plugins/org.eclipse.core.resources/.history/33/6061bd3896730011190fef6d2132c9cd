@@ -1,0 +1,18 @@
+/*
+ * App.c
+ *
+ *  Created on: Jun 29, 2026
+ *      Author: MSI PC
+ */
+
+#include <App.h>
+
+
+
+void App_Init(){
+
+}
+
+void App_Loop(){
+
+}

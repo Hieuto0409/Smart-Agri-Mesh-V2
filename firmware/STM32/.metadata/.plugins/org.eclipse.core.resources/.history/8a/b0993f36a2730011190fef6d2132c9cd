@@ -1,0 +1,13 @@
+/*
+ * light_sensor.c
+ *
+ *  Created on: Jun 29, 2026
+ *      Author: MSI PC
+ */
+#include "Light_Sensor/light_sensor.h"
+extern uint16_t adc_buffer[2];
+
+uint16_t cover_light(){
+
+}
+

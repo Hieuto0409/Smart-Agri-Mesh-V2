@@ -57,20 +57,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define B1_Pin GPIO_PIN_13
-#define B1_GPIO_Port GPIOC
-#define USART_TX_Pin GPIO_PIN_2
-#define USART_TX_GPIO_Port GPIOA
-#define USART_RX_Pin GPIO_PIN_3
-#define USART_RX_GPIO_Port GPIOA
-#define LD2_Pin GPIO_PIN_5
-#define LD2_GPIO_Port GPIOA
-#define TMS_Pin GPIO_PIN_13
-#define TMS_GPIO_Port GPIOA
-#define TCK_Pin GPIO_PIN_14
-#define TCK_GPIO_Port GPIOA
-#define SWO_Pin GPIO_PIN_3
-#define SWO_GPIO_Port GPIOB
+#define Relay_Pin GPIO_PIN_1
+#define Relay_GPIO_Port GPIOA
+#define light_sensor_Pin GPIO_PIN_4
+#define light_sensor_GPIO_Port GPIOA
+#define soild_moisture_Pin GPIO_PIN_5
+#define soild_moisture_GPIO_Port GPIOA
+#define DHT11_Pin GPIO_PIN_6
+#define DHT11_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 
