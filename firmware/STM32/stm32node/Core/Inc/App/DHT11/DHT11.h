@@ -1,0 +1,23 @@
+/*
+ * relay.h
+ *
+ *  Created on: Jun 29, 2026
+ *      Author: MSI PC
+ */
+
+#ifndef INC_APP_DHT11_DHT11_H_
+#define INC_APP_DHT11_DHT11_H_
+
+#include "main.h"
+#include "stm32f4xx_hal.h"
+
+
+void DHT11_Start(void);
+uint8_t DHT11_Check_Response(void);
+uint8_t DHT11_Read(void);
+void DHT11_Data(void);
+
+extern float humi_dht;
+extern float temp_dht;
+
+#endif /* INC_APP_DHT11_DHT11_H_ */

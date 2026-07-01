@@ -8,6 +8,8 @@
 #ifndef INC_APP_SOIL_MOISTURE_SOIL_MOISTURE_H_
 #define INC_APP_SOIL_MOISTURE_SOIL_MOISTURE_H_
 
+#include "main.h"
 
+uint16_t cover_soil();
 
 #endif /* INC_APP_SOIL_MOISTURE_SOIL_MOISTURE_H_ */

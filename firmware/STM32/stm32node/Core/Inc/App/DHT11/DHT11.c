@@ -5,4 +5,82 @@
  *      Author: MSI PC
  */
 
+#include "DHT11.h"
+extern TIM_HandleTypeDef htim2;
 
+uint8_t RHI, RHD, TCI, TCD, SUM;
+uint8_t dht_data[5];
+float humi_dht;
+float temp_dht;
+// 1. Hàm tạo trễ micro-giây bằng TIM2
+void delay_us(uint16_t us) {
+    __HAL_TIM_SET_COUNTER(&htim2, 0);
+    while ((__HAL_TIM_GET_COUNTER(&htim2)) < us);
+}
+
+void Set_Pin_Output(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin) {
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitStruct.Pin = GPIO_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
+}
+
+void Set_Pin_Input(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin) {
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitStruct.Pin = GPIO_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
+}
+
+void DHT11_Start(void) {
+    Set_Pin_Output(DHT11_GPIO_Port, DHT11_Pin);  // Chuyển thành chân xuất
+    HAL_GPIO_WritePin(DHT11_GPIO_Port, DHT11_Pin, 0); // Kéo xuống mức 0
+    HAL_Delay(18); // Chờ 18ms theo datasheet
+    HAL_GPIO_WritePin(DHT11_GPIO_Port, DHT11_Pin, 1); // Kéo lên mức 1
+    delay_us(20);
+    Set_Pin_Input(DHT11_GPIO_Port, DHT11_Pin);   // Chuyển thành chân nhận để nghe DHT11 trả lời
+}
+
+// 4. Hàm kiểm tra DHT11 có phản hồi không
+uint8_t DHT11_Check_Response(void) {
+    uint8_t Response = 0;
+    delay_us(40);
+    if (!(HAL_GPIO_ReadPin(DHT11_GPIO_Port, DHT11_Pin))) {
+        delay_us(80);
+        if ((HAL_GPIO_ReadPin(DHT11_GPIO_Port, DHT11_Pin))) Response = 1; // Có phản hồi
+        else Response = -1; // Lỗi
+    }
+    while ((HAL_GPIO_ReadPin(DHT11_GPIO_Port, DHT11_Pin))); // Chờ DHT11 kéo xuống lại
+    return Response;
+}
+
+uint8_t DHT11_Read(void) {
+    uint8_t i, j;
+    for (j = 0; j < 8; j++) {
+        while (!(HAL_GPIO_ReadPin(DHT11_GPIO_Port, DHT11_Pin))); // Chờ mức 1
+        delay_us(40); // Đợi 40us để đo độ rộng xung
+        if (!(HAL_GPIO_ReadPin(DHT11_GPIO_Port, DHT11_Pin))) {
+            i &= ~(1 << (7 - j)); // Nếu xung ngắn -> là bit 0
+        } else {
+            i |= (1 << (7 - j));  // Nếu xung dài -> là bit 1
+            while ((HAL_GPIO_ReadPin(DHT11_GPIO_Port, DHT11_Pin))); // Chờ bit 1 kết thúc1
+        }
+    }
+    return i;
+}
+void DHT11_Data(void){
+	RHI = DHT11_Read(); // Byte 1: Số nguyên Độ ẩm
+	RHD = DHT11_Read(); // Byte 2: Số thập phân Độ ẩm
+	TCI = DHT11_Read(); // Byte 3: Số nguyên Nhiệt độ
+	TCD = DHT11_Read(); // Byte 4: Số thập phân Nhiệt độ
+	SUM = DHT11_Read(); // Byte 5: Checksum của DHT11
+
+	// 3. Kiểm tra tính toàn vẹn (Checksum)
+	if (SUM == (RHI + RHD + TCI + TCD)) {
+		// Chuyển kết quả sang kiểu số nguyên (int)
+		humi_dht = (RHI * 10) + RHD;
+		temp_dht = (TCI * 10) + TCD;
+	}
+}

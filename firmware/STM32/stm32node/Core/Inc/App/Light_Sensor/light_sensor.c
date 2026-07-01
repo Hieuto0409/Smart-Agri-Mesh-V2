@@ -10,9 +10,9 @@ uint16_t cover_light(){
 	uint16_t light_raw = adc_buffer[0];      // Giá trị ánh sáng (Rank 1)
 
 	// 2. Ví dụ: Tính toán phần trăm ánh sáng (nếu cần)
-	// 0 tương ứng trời tối nhất, 4095 tương ứng trời sáng nhất (hoặc ngược lại tùy loại mạch cảm biến)
-	if (light_raw > 4064) light_raw = 4064;
-	if (light_raw < 54)   light_raw = 54;
+	// 4064 tương ứng trời tối nhất, 54 tương ứng trời sáng nhất (hoặc ngược lại tùy loại mạch cảm biến)
+	if (light_raw > 4095) light_raw = 4095;
+	if (light_raw < 0)   light_raw = 0;
 	uint16_t Light_value = ((4064 - light_raw)/4010)*100;
 
 	HAL_Delay(1000); // Đọc và gửi định kỳ mỗi 1 giây

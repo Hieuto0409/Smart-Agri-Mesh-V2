@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="hasShownOverlayPopupBefore" value="true"/>
+	<item key="replaceBarOpen" value="true"/>
+	<list key="replacehistory">
+		<item value="DHT11_Pin"/>
+		<item value="DHT11_GPIO_Port"/>
+	</list>
+	<list key="searchhistory">
+		<item value="DHT11_PIN"/>
+		<item value="DHT11_PORT"/>
+	</list>
+</section>

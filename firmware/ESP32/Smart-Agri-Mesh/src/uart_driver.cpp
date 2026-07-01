@@ -1,5 +1,11 @@
 #include "uart_driver.h"
 
+float real_temp;
+float real_humi;
+float real_soil_moisture;
+float real_light;
+float real_pump_status;
+
 #pragma pack(push, 1) // Cực kỳ quan trọng: Ép trình biên dịch không được tự động chèn byte trống (memory padding)
 typedef struct
 {
@@ -8,8 +14,8 @@ typedef struct
 
     int16_t temp_x10;       // Nhiệt độ x10 (vd: 27.5 độ -> gửi số nguyên 275)
     uint16_t humi_x10;      // Độ ẩm kk x10 (vd: 68.2% -> gửi 682)
-    uint16_t soil_moisture; // Giá trị ADC độ ẩm đất (0 - 4095)
-    uint16_t battery_mv;    // Điện áp pin (vd: pin 3750 mV)
+    uint16_t soil_moisture; // Giá trị % độ ẩm đất (vd: 45% -> gửi số nguyên 45)
+    uint16_t light;         // Giá trị % ánh sáng (vd: 300 lux -> gửi số nguyên 300)
 
     uint8_t status_flags; // Cờ trạng thái (Bit 0: Bơm đang bật/tắt, Bit 1: Lỗi cảm biến...)
     uint8_t checksum;     // Mã kiểm tra toàn vẹn dữ liệu
@@ -43,9 +49,11 @@ void Read_STM32_UART()
                     // DỮ LIỆU CHUẨN 100%! Ép kiểu ngược lại
                     memcpy(&rx_data, raw_buf, sizeof(AgriPacket));
 
-                    float real_temp = rx_data.temp_x10 / 10.0;
-                    float real_humi = rx_data.humi_x10 / 10.0;
-
+                    real_temp = rx_data.temp_x10 / 10.0;
+                    real_humi = rx_data.humi_x10 / 10.0;
+                    real_soil_moisture = rx_data.soil_moisture;
+                    real_light = rx_data.light;
+                    real_pump_status = rx_data.status_flags;
                     // Xử lý đẩy lên Mesh hoặc đưa vào AI Model ở đây
                 }
                 else

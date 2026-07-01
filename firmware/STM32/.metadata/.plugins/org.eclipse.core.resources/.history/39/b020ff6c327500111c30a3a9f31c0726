@@ -1,0 +1,20 @@
+/*
+ * App.c
+ *
+ *  Created on: Jun 29, 2026
+ *      Author: MSI PC
+ */
+
+#include <App.h>
+#include <UART/uart_driver.h>
+#include <DHT11.h>
+
+void App_Init(){
+	HAL_TIM_Base_Start(&htim2);
+
+	humi_dht = 0.0;
+}
+
+void App_Loop(){
+
+}

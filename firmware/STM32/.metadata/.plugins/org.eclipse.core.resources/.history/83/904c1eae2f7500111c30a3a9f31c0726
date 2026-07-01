@@ -1,0 +1,16 @@
+/*
+ * DHT11.c
+ *
+ *  Created on: Jun 29, 2026
+ *      Author: MSI PC
+ */
+
+#include "DHT11.h"
+
+// 1. Hàm tạo trễ micro-giây bằng TIM2
+void delay_us(uint16_t us) {
+    __HAL_TIM_SET_COUNTER(&htim2, 0);
+    while ((__HAL_TIM_GET_COUNTER(&htim2)) < us);
+}
+
+

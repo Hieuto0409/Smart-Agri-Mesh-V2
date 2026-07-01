@@ -6,13 +6,27 @@
  */
 
 #include <App.h>
+#include <main.h>
 #include <UART/uart_driver.h>
+#include <DHT11/DHT11.h>
+#include <Light_Sensor/light_sensor.h>
+#include <Soil_Moisture/soil_moisture.h>
+#include <Relay/relay.h>
 
+extern TIM_HandleTypeDef htim2;
 
 void App_Init(){
+	HAL_TIM_Base_Start(&htim2);
 
+	humi_dht = 0.0;
+	temp_dht = 0.0;
 }
 
 void App_Loop(){
-
+	DHT11_Start();
+	if(DHT11_Check_Response()==1){
+		DHT11_Data();
+		Send_Data_To_Gateway(temp_dht, humi_dht, cover_soil(), cover_light(), is_relay);
+	}
+	HAL_Delay(2000);
 }

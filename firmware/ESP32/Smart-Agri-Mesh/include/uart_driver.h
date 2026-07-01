@@ -1,4 +1,11 @@
-#ifndef INC_APP_UART_UART_DRIVER_H_
-#define INC_APP_UART_UART_DRIVER_H_
+#ifndef INC_UART_UART_DRIVER_H_
+#define INC_UART_UART_DRIVER_H_
 #include "Arduino.h"
-#endif /* INC_APP_UART_UART_DRIVER_H_ */
+
+extern float real_temp;
+extern float real_humi;
+extern float real_soil_moisture;
+extern float real_light;
+extern float real_pump_status;
+
+#endif /* INC_UART_UART_DRIVER_H_ */

@@ -8,6 +8,9 @@
 #ifndef INC_APP_RELAY_RELAY_H_
 #define INC_APP_RELAY_RELAY_H_
 
+#include "main.h"
+#include "stm32f4xx_hal.h"
 
+extern uint8_t is_relay;
 
 #endif /* INC_APP_RELAY_RELAY_H_ */

@@ -10,4 +10,5 @@
 
 #include "main.h"
 
+uint16_t cover_light();
 #endif /* INC_APP_LIGHT_SENSOR_LIGHT_SENSOR_H_ */
