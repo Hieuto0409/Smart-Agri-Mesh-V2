@@ -9,6 +9,9 @@
 
 int nhiet_do = 0;
 int do_am = 0;
+int anh_sang = 0;
+int do_am_dat = 0;
+int may_bom = 0;
 
 #define WIFI_SSID "Hieu"
 #define WIFI_PASSWORD "toquanghieu"
@@ -70,9 +73,14 @@ void Firebase_Loop()
         sendDataPrevMillis = millis();
 
         // Giả lập dữ liệu đọc từ cảm biến
+        int minVal = 1;
+        int maxVal = 100;
         srand(time(0));
-        nhiet_do = 1 + rand() % 100;
-        do_am = 1 + rand() % 100;
+        nhiet_do = 20 + rand() % (40 - 20 + 1);
+        do_am = minVal + rand() % (maxVal - minVal + 1);
+        anh_sang = minVal + rand() % (maxVal - minVal + 1);
+        do_am_dat = minVal + rand() % (maxVal - minVal + 1);
+        may_bom = rand() % 2;
 
         // Gửi giá trị nhiệt độ lên nhánh "/smart-agri/nhiet_do"
         if (Firebase.RTDB.setInt(&fbdo, "/smart-agri/nhiet_do", nhiet_do))
@@ -95,6 +103,36 @@ void Firebase_Loop()
         else
         {
             Serial.print("Lỗi gửi dữ liệu độ ẩm: ");
+            Serial.println(fbdo.errorReason());
+        }
+        if (Firebase.RTDB.setInt(&fbdo, "/smart-agri/anh_sang", anh_sang))
+        {
+            Serial.print("Đã gửi Ánh sáng: ");
+            Serial.println(anh_sang);
+        }
+        else
+        {
+            Serial.print("Lỗi gửi dữ liệu ánh sáng: ");
+            Serial.println(fbdo.errorReason());
+        }
+        if (Firebase.RTDB.setInt(&fbdo, "/smart-agri/do_am_dat", do_am_dat))
+        {
+            Serial.print("Đã gửi Độ ẩm đất: ");
+            Serial.println(do_am_dat);
+        }
+        else
+        {
+            Serial.print("Lỗi gửi dữ liệu độ ẩm đất: ");
+            Serial.println(fbdo.errorReason());
+        }
+        if (Firebase.RTDB.setInt(&fbdo, "/smart-agri/may_bom", may_bom))
+        {
+            Serial.print("Đã gửi Máy bơm: ");
+            Serial.println(may_bom);
+        }
+        else
+        {
+            Serial.print("Lỗi gửi dữ liệu máy bơm: ");
             Serial.println(fbdo.errorReason());
         }
     }
